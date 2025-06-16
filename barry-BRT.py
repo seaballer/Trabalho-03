@@ -17,27 +17,95 @@ class noh:
     self.dado = dado
     self.esq = None
     self.dir = None
-  
-def insere(raiz, dado):
+    self.cor = True
+
+def rotacionaEsquerda(y):
+  x = y.dir
+  y.dir = x.esq
+  x.esq = y
+  x.cor = y.cor
+  y.cor = True
+  return x
+
+def rotacionaDireita(y):
+  x = y.esq
+  y.esq = x.dir
+  x.dir = y
+  x.cor = y.cor
+  y.cor = True
+  return x
+
+def sobeVermelho(y):
+  y.cor = True
+  y.esq.cor = False
+  y.dir.cor = False   
+
+def verificaVermelho(y):
+  if y is None:
+    return False
+  return y.cor
+
+def verificaPreto(y):
+  return not verificaVermelho(y)
+
+def _insere_recursivo(raiz, dado):
   #VOCÊ DEVE FAZER ESSA FUNÇÃO
   ##recebe uma arvore e devolve o endereço da nova arvore com o dado adicionado
+  if raiz is None:
+    return noh(dado)
+  elif dado < raiz.dado:
+    raiz.esq = _insere_recursivo(raiz.esq, dado)
+  elif dado > raiz.dado:
+    raiz.dir = _insere_recursivo(raiz.dir, dado)
+  else:
+    return raiz
+  
+  if verificaVermelho(raiz.dir) and verificaPreto(raiz.esq):
+    raiz = rotacionaEsquerda(raiz)
+  if verificaVermelho(raiz.esq) and verificaVermelho(raiz.esq.esq):
+    raiz = rotacionaDireita(raiz)
+  if verificaVermelho(raiz.dir) and verificaVermelho(raiz.esq):
+    sobeVermelho(raiz)
+  return raiz 
+
+def insere(raiz, dado):
+  raiz = _insere_recursivo(raiz, dado)
+  raiz.cor = False
+  return raiz
+  
   
   
 def em_ordem(no):
   #VOCÊ DEVE FAZER ESSA FUNÇÃO
   ##Imprime os dados da árvore em ordem crescente
-  if no == None:
-    return
-
+  if no is None:
+    return 
   em_ordem(no.esq)
-  print(no.dado, end=" ")
+  print(no.dado)
   em_ordem(no.dir)
 
+
+def _encontra_mais_proximo_recursivo(no, x, mais_proximo):
+  if no is None:
+    return mais_proximo
+
+  if no.dado == x:
+    return no.dado
+  
+  if abs(no.dado - x) < abs(mais_proximo - x):
+    mais_proximo = no.dado
+
+  if x < no.dado:
+    return _encontra_mais_proximo_recursivo(no.esq, x, mais_proximo)
+  else:
+    return _encontra_mais_proximo_recursivo(no.dir, x, mais_proximo)
 
 def encontra_mais_proximo(no, x):
   #VOCÊ DEVE FAZER ESSA FUNÇÃO
   ##Encontra o valor mais próximo de x na árvore
-  
+  mais_proximo = _encontra_mais_proximo_recursivo(no, x, no.dado)
+  return mais_proximo
+
 
 
 
@@ -109,20 +177,4 @@ while chute >= 0:
   else:
     chute = int(input(f"\nErrou! {chute} não é a resposta!\nTente novamente: "))
 
-print("Saindo!")  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+print("Saindo!")
