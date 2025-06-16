@@ -91,9 +91,12 @@ def _encontra_mais_proximo_recursivo(no, x, mais_proximo):
 
   if no.dado == x:
     return no.dado
-  
-  if abs(no.dado - x) < abs(mais_proximo - x):
-    mais_proximo = no.dado
+
+  distancia_atual = abs(no.dado - x)
+  distancia_menor = abs(mais_proximo - x)
+
+  if distancia_atual < distancia_menor or (distancia_atual == distancia_menor and no.dado < mais_proximo):
+    mais_proximo = no.dado 
 
   if x < no.dado:
     return _encontra_mais_proximo_recursivo(no.esq, x, mais_proximo)
