@@ -45,6 +45,7 @@ def rotacaoEsquerda(y):
   return x
   
 #FB = FATOR DE BALANCEAMENTO
+# Positivo: esquerda; Negativo: Direita
 def fb(y):
   return altura(y.esq) - altura(y.dir)
 
@@ -56,8 +57,20 @@ def insere(raiz, dado):
   
   if dado < raiz.dado:
     raiz.esq = insere(raiz.esq, dado)
+
+    # balanceamento
+    if fb(raiz) == 2: # esquerda
+      if dado > raiz.esq.dado:
+        raiz.esq = rotacaoEsquerda(raiz.esq)  # esquerda-direita
+      raiz = rotacaoDireita(raiz) # esquerda-esquerda
   elif dado > raiz.dado:
     raiz.dir = insere(raiz.dir, dado)
+
+    #balanceamento
+    if fb(raiz) == -2:  # direita
+      if dado < raiz.dir.dado:
+        raiz.dir = rotacaoDireita(raiz.dir) # direita-esquerda
+      raiz = rotacaoEsquerda(raiz)  # direita-direita
   else:
     return raiz
   
@@ -75,10 +88,26 @@ def em_ordem(no):
   print(no.dado, end=" ")
   em_ordem(no.dir)
 
-
-def encontra_mais_proximo(no, x):
+def encontra_mais_proximo(no, x, mais_proximo=None):
   #VOCÊ DEVE FAZER ESSA FUNÇÃO
   ##Encontra o valor mais próximo de x na árvore
+  if no == None:
+    return mais_proximo
+  
+  # inicializar mais_proximo / atualizar mais_proximo
+  if mais_proximo == None or abs(no.dado - x) < abs(mais_proximo - x):
+    mais_proximo = no.dado
+
+  # percorrer árvore
+  # precisamos guardar esse valor durante o processo recursivo então tem returns
+  if x < no.dado:
+    return encontra_mais_proximo(no.esq, x, mais_proximo=mais_proximo)
+  elif x > no.dado:
+    return encontra_mais_proximo(no.dir, x, mais_proximo=mais_proximo)
+  else: # dado é igual a x, automaticamente vira o dado mais próximo
+    return no.dado
+
+  
   
 
 
