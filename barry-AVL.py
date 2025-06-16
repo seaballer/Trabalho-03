@@ -10,7 +10,7 @@ random.seed(42)  # Para garantir a reprodutibilidade dos testes
 #FUNÇÕES ADICIONAIS 
 
 #Quando você estiver submetendo no RunCodes, mude para True
-ESTOU_SUBMETENDO_NO_RUNCODES = False
+ESTOU_SUBMETENDO_NO_RUNCODES = True
 
 class noh:
   def __init__(self, dado):
@@ -74,7 +74,7 @@ def insere(raiz, dado):
   else:
     return raiz
   
-  raiz.altura = max(altura(raiz.dir, altura(raiz.esq))) + 1
+  raiz.altura = max(altura(raiz.dir), altura(raiz.esq)) + 1
 
   return raiz
   
