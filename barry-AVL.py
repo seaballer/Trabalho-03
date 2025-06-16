@@ -91,21 +91,23 @@ def em_ordem(no):
 def encontra_mais_proximo(no, x, mais_proximo=None):
   #VOCÊ DEVE FAZER ESSA FUNÇÃO
   ##Encontra o valor mais próximo de x na árvore
+
+  # Casos base
   if no == None:
     return mais_proximo
+  
+  if no.dado == x:
+    return no.dado
   
   # inicializar mais_proximo / atualizar mais_proximo
   if mais_proximo == None or abs(no.dado - x) < abs(mais_proximo - x):
     mais_proximo = no.dado
 
   # percorrer árvore
-  # precisamos guardar esse valor durante o processo recursivo então tem returns
   if x < no.dado:
     return encontra_mais_proximo(no.esq, x, mais_proximo=mais_proximo)
   elif x > no.dado:
     return encontra_mais_proximo(no.dir, x, mais_proximo=mais_proximo)
-  else: # dado é igual a x, automaticamente vira o dado mais próximo
-    return no.dado
 
   
   
