@@ -1,0 +1,1 @@
+Arquivo barry-BRT.py possui a solução utilizando árvore rubro-negra. Arquivo barry-AVL.py possui a solução utilizando árvore AVL.
