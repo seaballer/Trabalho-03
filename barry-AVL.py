@@ -17,15 +17,63 @@ class noh:
     self.dado = dado
     self.esq = None
     self.dir = None
+    self.altura = 0
+
+def altura(y):
+  if y == None:
+    return -1
+  return y.altura
+    
+def rotacaoDireita(y):
+  x = y.esq
+  y.esq = x.dir
+  x.dir = y
   
+  y.altura = max(altura(y.esq), altura(y.dir)) + 1
+  x.altura = max(altura(x.esq), altura(x.dir)) + 1
+  
+  return x
+  
+def rotacaoEsquerda(y):
+  x = y.dir
+  y.dir = x.esq
+  x.esq = y
+  
+  y.altura = max(altura(y.esq), altura(y.dir)) + 1
+  x.altura = max(altura(x.esq), altura(x.dir)) + 1
+  
+  return x
+  
+#FB = FATOR DE BALANCEAMENTO
+def fb(y):
+  return altura(y.esq) - altura(y.dir)
+
 def insere(raiz, dado):
   #VOCÊ DEVE FAZER ESSA FUNÇÃO
   ##recebe uma arvore e devolve o endereço da nova arvore com o dado adicionado
+  if raiz == None:
+    return noh(dado)
   
+  if dado < raiz.dado:
+    raiz.esq = insere(raiz.esq, dado)
+  elif dado > raiz.dado:
+    raiz.dir = insere(raiz.dir, dado)
+  else:
+    return raiz
+  
+  raiz.altura = max(altura(raiz.dir, altura(raiz.esq))) + 1
+
+  return raiz
   
 def em_ordem(no):
   #VOCÊ DEVE FAZER ESSA FUNÇÃO
   ##Imprime os dados da árvore em ordem crescente
+  if no == None:
+    return
+
+  em_ordem(no.esq)
+  print(no.dado, end=" ")
+  em_ordem(no.dir)
 
 
 def encontra_mais_proximo(no, x):

@@ -26,6 +26,12 @@ def insere(raiz, dado):
 def em_ordem(no):
   #VOCÊ DEVE FAZER ESSA FUNÇÃO
   ##Imprime os dados da árvore em ordem crescente
+  if no == None:
+    return
+
+  em_ordem(no.esq)
+  print(no.dado, end=" ")
+  em_ordem(no.dir)
 
 
 def encontra_mais_proximo(no, x):
